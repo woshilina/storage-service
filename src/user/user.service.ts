@@ -39,8 +39,9 @@ export class UserService {
     }
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findAll() {
+    return await this.userRepository.find();
+    // return `This action returns all user`;
   }
 
   login(loginData: CreateUserDto) {
