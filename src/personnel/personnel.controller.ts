@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { PersonnelService } from './personnel.service';
 import { CreatePersonnelDto } from './dto/create-personnel.dto';
@@ -22,8 +23,20 @@ export class PersonnelController {
   }
 
   @Get('/all')
-  findAll() {
-    return this.personnelService.findAll();
+  async findAll(
+    @Query('currentPage') currentPage: number = 1,
+    @Query('pageSize') pageSize: number = 10,
+  ) {
+    const [data, total] = await Promise.all([
+      this.personnelService.findAll(currentPage, pageSize),
+      this.personnelService.getCount(),
+    ]);
+    const totalPage = Math.ceil(total / pageSize);
+    return {
+      data,
+      total,
+      totalPage,
+    };
   }
 
   @Get(':id')

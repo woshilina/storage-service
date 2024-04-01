@@ -22,8 +22,19 @@ export class PersonnelService {
     };
   }
 
-  async findAll() {
-    return await this.personnelRepository.find();
+  async findAll(currentPage: number, pageSize: number): Promise<Personnel[]> {
+    const skip = (currentPage - 1) * pageSize;
+    return await this.personnelRepository.find({
+      skip,
+      take: pageSize,
+      order: {
+        id: 'DESC', //按 id 降序
+      },
+    });
+  }
+
+  async getCount(): Promise<number> {
+    return await this.personnelRepository.count();
   }
 
   findOne(id: number) {
