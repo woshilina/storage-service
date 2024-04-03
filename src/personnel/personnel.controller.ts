@@ -26,11 +26,20 @@ export class PersonnelController {
   async findAll(
     @Query('currentPage') currentPage: number = 1,
     @Query('pageSize') pageSize: number = 10,
+    @Query('name') name: string = '',
+    @Query('sex') sex: string = '',
+    @Query('fromAge') fromAge: number = 0,
+    @Query('toAge') toAge: number = 0,
   ) {
-    const [data, total] = await Promise.all([
-      this.personnelService.findAll(currentPage, pageSize),
-      this.personnelService.getCount(),
-    ]);
+    const [data, total] = await this.personnelService.findAll(
+      currentPage,
+      pageSize,
+      name,
+      sex,
+      fromAge,
+      toAge,
+    );
+
     const totalPage = Math.ceil(total / pageSize);
     return {
       data,

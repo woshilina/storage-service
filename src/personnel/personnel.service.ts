@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreatePersonnelDto } from './dto/create-personnel.dto';
 import { UpdatePersonnelDto } from './dto/update-personnel.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Brackets } from 'typeorm';
 import { Personnel } from './entities/personnel.entity';
 
 @Injectable()
@@ -22,15 +22,53 @@ export class PersonnelService {
     };
   }
 
-  async findAll(currentPage: number, pageSize: number): Promise<Personnel[]> {
+  async findAll(
+    currentPage: number,
+    pageSize: number,
+    name: string,
+    sex: string,
+    fromAge: number,
+    toAge: number,
+  ): Promise<[Personnel[], number]> {
     const skip = (currentPage - 1) * pageSize;
-    return await this.personnelRepository.find({
-      skip,
-      take: pageSize,
-      order: {
-        id: 'DESC', //按 id 降序
-      },
-    });
+    return await this.personnelRepository
+      .createQueryBuilder('personnel')
+      .where(
+        new Brackets((qb) => {
+          if (name) {
+            return qb.where('personnel.name LIKE :name', {
+              name: `%${name}%`,
+            });
+          } else {
+            return qb;
+          }
+        }),
+      )
+      .andWhere(
+        new Brackets((qb) => {
+          if (sex) {
+            return qb.where('personnel.sex = :sex', { sex });
+          } else {
+            return qb;
+          }
+        }),
+      )
+      .andWhere(
+        new Brackets((qb) => {
+          if (fromAge && toAge) {
+            return qb.where('personnel.age BETWEEN :fromAge AND :toAge', {
+              fromAge,
+              toAge,
+            });
+          } else {
+            return qb;
+          }
+        }),
+      )
+      .orderBy('personnel.id', 'DESC')
+      .skip(skip)
+      .take(pageSize)
+      .getManyAndCount();
   }
 
   async getCount(): Promise<number> {
