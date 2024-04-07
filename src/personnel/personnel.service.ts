@@ -75,8 +75,8 @@ export class PersonnelService {
     return await this.personnelRepository.count();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} personnel`;
+  async findOne(id: number): Promise<Personnel> {
+    return await this.personnelRepository.findOneByOrFail({ id: id });
   }
 
   async update(id: number, updatePersonnelDto: UpdatePersonnelDto) {
