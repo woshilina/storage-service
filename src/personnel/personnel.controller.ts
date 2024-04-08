@@ -18,7 +18,6 @@ export class PersonnelController {
 
   @Post('/add')
   create(@Body() createPersonnelDto: CreatePersonnelDto) {
-    console.log(createPersonnelDto);
     return this.personnelService.create(createPersonnelDto);
   }
 

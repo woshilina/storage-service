@@ -76,11 +76,15 @@ export class PersonnelService {
   }
 
   async findOne(id: number): Promise<Personnel> {
-    return await this.personnelRepository.findOneByOrFail({ id: id });
+    // return await this.personnelRepository.findOneByOrFail({ id: id });
+    return await this.personnelRepository.findOne({
+      where: {
+        id,
+      },
+    });
   }
 
   async update(id: number, updatePersonnelDto: UpdatePersonnelDto) {
-    console.log(id);
     await this.personnelRepository.update(id, updatePersonnelDto);
     return {
       message: '编辑成功',
