@@ -85,7 +85,18 @@ export class PersonnelService {
   }
 
   async update(id: number, updatePersonnelDto: UpdatePersonnelDto) {
-    await this.personnelRepository.update(id, updatePersonnelDto);
+    const personnel = await this.personnelRepository.findOne({
+      where: {
+        id,
+      },
+    });
+    personnel.name = updatePersonnelDto.name;
+    personnel.age = updatePersonnelDto.age;
+    personnel.sex = updatePersonnelDto.sex;
+    personnel.IDNo = updatePersonnelDto.IDNo;
+    personnel.avatar = updatePersonnelDto.avatar;
+    personnel.email = updatePersonnelDto.email;
+    await this.personnelRepository.save(personnel);
     return {
       message: '编辑成功',
       status: 200,
