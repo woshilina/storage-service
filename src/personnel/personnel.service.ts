@@ -105,13 +105,13 @@ export class PersonnelService {
     };
   }
 
-  async remove(id: number) {
-    await this.personnelRepository.delete(id);
-    return {
-      message: '删除成功',
-      status: 200,
-    };
-  }
+  // async remove(id: number) {
+  //   await this.personnelRepository.delete(id);
+  //   return {
+  //     message: '删除成功',
+  //     status: 200,
+  //   };
+  // }
 
   async multiRemove(ids: []) {
     await this.personnelRepository.delete(ids);
