@@ -9,8 +9,8 @@ import {
   Put,
 } from '@nestjs/common';
 import { PersonnelService } from './personnel.service';
-import { CreatePersonnelDto } from './dto/create-personnel.dto';
-import { UpdatePersonnelDto } from './dto/update-personnel.dto';
+import { CreatePersonnelDto, UpdatePersonnelDto } from './dto/personnel.dto';
+import { DeleteDto } from './dto/delete.dto';
 
 @Controller('/api/v1/personnel')
 export class PersonnelController {
@@ -60,8 +60,13 @@ export class PersonnelController {
     return this.personnelService.update(+id, updatePersonnelDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.personnelService.remove(+id);
+  @Delete('/multi')
+  multiRemove(@Body() body: DeleteDto) {
+    return this.personnelService.multiRemove(body.ids);
   }
+
+  // @Delete('/:id')
+  // remove(@Param('id') id: number) {
+  //   return this.personnelService.remove(id);
+  // }
 }

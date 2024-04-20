@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePersonnelDto } from './dto/create-personnel.dto';
-import { UpdatePersonnelDto } from './dto/update-personnel.dto';
+import { CreatePersonnelDto, UpdatePersonnelDto } from './dto/personnel.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Brackets } from 'typeorm';
 import { Personnel } from './entities/personnel.entity';
@@ -108,6 +107,14 @@ export class PersonnelService {
 
   async remove(id: number) {
     await this.personnelRepository.delete(id);
+    return {
+      message: '删除成功',
+      status: 200,
+    };
+  }
+
+  async multiRemove(ids: []) {
+    await this.personnelRepository.delete(ids);
     return {
       message: '删除成功',
       status: 200,
