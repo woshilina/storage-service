@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-// import { Console } from 'console';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { BcryptService } from '../common/bcryptjs';
 

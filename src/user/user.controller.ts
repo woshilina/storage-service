@@ -6,18 +6,12 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
-  UseInterceptors,
-  ValidationPipe,
-  ClassSerializerInterceptor,
-  Req,
   Request,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 // import { ValidationPipe } from '../pipe/validation/validation.pipe';
-import { AuthGuard } from '@nestjs/passport';
 
 @Controller('/api/v1/user')
 export class UserController {
