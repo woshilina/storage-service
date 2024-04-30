@@ -6,6 +6,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 // import { Console } from 'console';
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { BcryptService } from '../common/bcryptjs';
 
 @Injectable()
 export class UserService {
@@ -21,7 +22,7 @@ export class UserService {
     if (existUser) {
       return {
         message: '用户已存在',
-        code: '10003',
+        status: '10003',
       };
     }
     try {
@@ -29,28 +30,44 @@ export class UserService {
       //   username: createUserDto.username,
       //   password: createUserDto.password,
       // } as User);
-      return await this.userRepository.save({
-        username: createUserDto.username,
-        password: createUserDto.password,
-      } as User);
+      const entity = Object.assign(new User(), createUserDto);
+      return await this.userRepository.save(entity);
+      // return await this.userRepository.save({
+      //   username: entity.username,
+      //   password: entity.password,
+      // } as User);
     } catch (error) {
-      console.log('error', error);
       throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   async findAll() {
     return await this.userRepository.find();
-    // return `This action returns all user`;
   }
 
-  login(loginData: CreateUserDto) {
-    console.log(loginData);
-    return `登录成功`;
+  async login(loginData: CreateUserDto) {
+    const { username, password } = loginData;
+    const existUser = await this.userRepository.findOne({
+      where: { username },
+    });
+    if (!existUser) {
+      throw new HttpException('用户名不正确！', HttpStatus.UNAUTHORIZED);
+    }
+    const compareResult = BcryptService.compare(password, existUser.password);
+    if (!compareResult) {
+      throw new HttpException('密码错误！', HttpStatus.UNAUTHORIZED);
+    } else {
+      return {
+        message: '登录成功',
+        status: '200',
+      };
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(username: string): Promise<User | undefined> {
+    return this.userRepository.findOne({
+      where: { username },
+    });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
