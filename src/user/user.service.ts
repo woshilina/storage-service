@@ -19,10 +19,7 @@ export class UserService {
       where: { username },
     });
     if (existUser) {
-      return {
-        message: '用户已存在',
-        status: '10003',
-      };
+      throw new HttpException('用户已存在', HttpStatus.UNAUTHORIZED);
     }
     try {
       // const newUser = await this.userRepository.create({
@@ -30,7 +27,12 @@ export class UserService {
       //   password: createUserDto.password,
       // } as User);
       const entity = Object.assign(new User(), createUserDto);
-      return await this.userRepository.save(entity);
+      await this.userRepository.save(entity);
+      return {
+        message: '注册成功',
+        status: 200,
+      };
+      // throw new HttpException('注册成功', 200);
       // return await this.userRepository.save({
       //   username: entity.username,
       //   password: entity.password,

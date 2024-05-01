@@ -1,7 +1,13 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { BcryptService } from '../common/bcryptjs';
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -13,9 +19,12 @@ export class AuthService {
     password: string,
   ): Promise<{ access_token: string; username: string }> {
     const user = await this.userService.findOne(username);
-    const compareResult = BcryptService.compare(password, user.password);
+    if (!user) {
+      throw new HttpException('用户名不正确！', HttpStatus.UNAUTHORIZED);
+    }
+    const compareResult = await BcryptService.compare(password, user.password);
     if (!compareResult) {
-      throw new UnauthorizedException();
+      throw new HttpException('密码错误！', HttpStatus.UNAUTHORIZED);
     }
     const payload = { sub: user.id, username: user.username };
     return {
