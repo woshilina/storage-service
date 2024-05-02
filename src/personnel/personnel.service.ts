@@ -59,6 +59,14 @@ export class PersonnelService {
               fromAge,
               toAge,
             });
+          } else if (fromAge && !toAge) {
+            return qb.where('personnel.age  >= :fromAge', {
+              fromAge,
+            });
+          } else if (!fromAge && toAge) {
+            return qb.where('personnel.age  <= :toAge', {
+              toAge,
+            });
           } else {
             return qb;
           }
