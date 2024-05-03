@@ -27,16 +27,16 @@ export class PersonnelController {
     @Query('pageSize') pageSize: number = 10,
     @Query('name') name: string = '',
     @Query('sex') sex: string = '',
-    @Query('fromAge') fromAge: number = 0,
-    @Query('toAge') toAge: number = 0,
+    @Query('startAge') startAge: number = 0,
+    @Query('endAge') endAge: number = 0,
   ) {
     const [data, total] = await this.personnelService.findAll(
       currentPage,
       pageSize,
       name,
       sex,
-      fromAge,
-      toAge,
+      startAge,
+      endAge,
     );
 
     const totalPage = Math.ceil(total / pageSize);

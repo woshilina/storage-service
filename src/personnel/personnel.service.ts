@@ -26,8 +26,8 @@ export class PersonnelService {
     pageSize: number,
     name: string,
     sex: string,
-    fromAge: number,
-    toAge: number,
+    startAge: number,
+    endAge: number,
   ): Promise<[Personnel[], number]> {
     const skip = (currentPage - 1) * pageSize;
     return await this.personnelRepository
@@ -54,18 +54,18 @@ export class PersonnelService {
       )
       .andWhere(
         new Brackets((qb) => {
-          if (fromAge && toAge) {
-            return qb.where('personnel.age BETWEEN :fromAge AND :toAge', {
-              fromAge,
-              toAge,
+          if (startAge && endAge) {
+            return qb.where('personnel.age BETWEEN :startAge AND :endAge', {
+              startAge,
+              endAge,
             });
-          } else if (fromAge && !toAge) {
-            return qb.where('personnel.age  >= :fromAge', {
-              fromAge,
+          } else if (startAge && !endAge) {
+            return qb.where('personnel.age  >= :startAge', {
+              startAge,
             });
-          } else if (!fromAge && toAge) {
-            return qb.where('personnel.age  <= :toAge', {
-              toAge,
+          } else if (!startAge && endAge) {
+            return qb.where('personnel.age  <= :endAge', {
+              endAge,
             });
           } else {
             return qb;
