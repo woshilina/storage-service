@@ -83,7 +83,6 @@ export class PersonnelService {
   }
 
   async findOne(id: number): Promise<Personnel> {
-    // return await this.personnelRepository.findOneByOrFail({ id: id });
     return await this.personnelRepository.findOne({
       where: {
         id,

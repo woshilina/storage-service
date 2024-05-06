@@ -16,12 +16,12 @@ import { DeleteDto } from './dto/delete.dto';
 export class PersonnelController {
   constructor(private readonly personnelService: PersonnelService) {}
 
-  @Post('/add')
+  @Post('/')
   create(@Body() createPersonnelDto: CreatePersonnelDto) {
     return this.personnelService.create(createPersonnelDto);
   }
 
-  @Get('/all')
+  @Get('/')
   async findAll(
     @Query('currentPage') currentPage: number = 1,
     @Query('pageSize') pageSize: number = 10,
@@ -60,7 +60,7 @@ export class PersonnelController {
     return this.personnelService.update(+id, updatePersonnelDto);
   }
 
-  @Delete('/multi')
+  @Delete('/')
   multiRemove(@Body() body: DeleteDto) {
     return this.personnelService.multiRemove(body.ids);
   }
