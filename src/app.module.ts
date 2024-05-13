@@ -7,6 +7,7 @@ import { PersonnelModule } from './personnel/personnel.module';
 import { AuthModule } from './auth/auth.module';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './common/http-exception.filter';
+import { MenuModule } from './menu/menu.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { HttpExceptionFilter } from './common/http-exception.filter';
     UserModule,
     PersonnelModule,
     AuthModule,
+    MenuModule,
   ],
   controllers: [AppController],
   providers: [
