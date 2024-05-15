@@ -5,6 +5,9 @@ export class Menu {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ name: 'parent_id', nullable: true })
+  parentId: string;
+
   @Column()
   name: string;
 
@@ -12,13 +15,13 @@ export class Menu {
   url: string;
 
   @Column()
-  type: number; //  类型：0目录 1菜单 2按钮
+  type: string; //  类型：0目录 1菜单 2按钮
 
   @Column({ nullable: true })
   icon: string; //图标
 
   @Column({ name: 'order_num' })
-  orderNum: string; //排序
+  orderNum: number; //排序
 
   @Column({ nullable: true })
   create_by: string; //创建人

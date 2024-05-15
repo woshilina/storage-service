@@ -3,15 +3,14 @@ import { CreateMenuDto, UpdateMenuDto } from './dto/menu.dto';
 import { Menu } from './entities/menu.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Request } from 'express';
+// import { Request } from 'express';
 
 @Injectable()
 export class MenuService {
   constructor(
     @InjectRepository(Menu) private menuRepository: Repository<Menu>,
   ) {}
-  async create(createMenuDto: CreateMenuDto, request: Request) {
-    console.log(request);
+  async create(createMenuDto: CreateMenuDto) {
     return await this.menuRepository.save(createMenuDto);
   }
 
@@ -23,10 +22,22 @@ export class MenuService {
     return await this.menuRepository.findAndCount({
       order: {
         id: 'DESC',
+        orderNum: 'ASC',
       },
       skip: skip,
       take: pageSize,
     });
+  }
+
+  async findAllAsideMenu(type: string): Promise<Menu[]> {
+    const types = type.split(',');
+    return await this.menuRepository
+      .createQueryBuilder('menu')
+      .where('menu.type IN (:...types)', {
+        types: types,
+      })
+      .orderBy({ 'menu.id': 'DESC', 'menu.orderNum': 'ASC' })
+      .getMany();
   }
 
   async findOne(id: number): Promise<Menu> {
@@ -43,6 +54,7 @@ export class MenuService {
         id,
       },
     });
+    menu.parentId = updateMenuDto.parentId;
     menu.name = updateMenuDto.name;
     menu.url = updateMenuDto.url;
     menu.type = updateMenuDto.type;
