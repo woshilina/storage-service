@@ -16,7 +16,7 @@ import { CreateMenuDto, UpdateMenuDto } from './dto/menu.dto';
 import { DeleteDto } from './dto/delete.dto';
 // import { Request } from 'express';
 
-@Controller('/api/v1/menu')
+@Controller('/api/v1/menus')
 export class MenuController {
   constructor(private readonly menuService: MenuService) {}
 
@@ -37,11 +37,9 @@ export class MenuController {
     };
   }
 
-  @Get('/asidemenu')
-  async findAllAsideMenu(
-    @Query('type', new DefaultValuePipe('0,1')) type: string,
-  ) {
-    return await this.menuService.findAllAsideMenu(type);
+  @Get('/menu')
+  async findAllMenu(@Query('type', new DefaultValuePipe('0,1')) type: string) {
+    return await this.menuService.findAllMenu(type);
   }
 
   @Get(':id')

@@ -3,6 +3,7 @@ import { CreateMenuDto, UpdateMenuDto } from './dto/menu.dto';
 import { Menu } from './entities/menu.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { flatArrayToTree } from '../common/utils';
 // import { Request } from 'express';
 
 @Injectable()
@@ -19,7 +20,7 @@ export class MenuService {
     pageSize: number,
   ): Promise<[Menu[], number]> {
     const skip = (currentPage - 1) * pageSize;
-    return await this.menuRepository.findAndCount({
+    const [list, total] = await this.menuRepository.findAndCount({
       order: {
         id: 'DESC',
         orderNum: 'ASC',
@@ -27,17 +28,19 @@ export class MenuService {
       skip: skip,
       take: pageSize,
     });
+    return [flatArrayToTree(list), total];
   }
 
-  async findAllAsideMenu(type: string): Promise<Menu[]> {
+  async findAllMenu(type: string): Promise<Menu[]> {
     const types = type.split(',');
-    return await this.menuRepository
+    const list = await this.menuRepository
       .createQueryBuilder('menu')
       .where('menu.type IN (:...types)', {
         types: types,
       })
       .orderBy({ 'menu.id': 'DESC', 'menu.orderNum': 'ASC' })
       .getMany();
+    return flatArrayToTree(list);
   }
 
   async findOne(id: number): Promise<Menu> {
