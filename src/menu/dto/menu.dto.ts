@@ -1,6 +1,6 @@
 import { IsString, IsInt } from 'class-validator';
 class CreateMenuDto {
-  @IsInt()
+  // @IsInt()
   parentId: number;
   @IsString()
   name: string; //名称
@@ -14,7 +14,7 @@ class CreateMenuDto {
 }
 
 class UpdateMenuDto {
-  @IsInt()
+  // @IsInt()
   parentId: number;
   @IsString()
   name: string; //名称

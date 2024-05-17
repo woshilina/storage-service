@@ -3,7 +3,7 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class Role {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: string;
 
   @Column()
   name: string;
@@ -11,14 +11,14 @@ export class Role {
   @Column()
   remark: string;
 
-  @Column({ nullable: true })
-  create_by: string; //创建人
+  // @Column({ nullable: true })
+  // create_by: string; //创建人
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   create_time: Date;
 
-  @Column({ nullable: true })
-  update_by: string; //更新人
+  // @Column({ nullable: true })
+  // update_by: string; //更新人
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   update_time: Date;

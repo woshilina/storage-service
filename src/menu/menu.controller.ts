@@ -25,20 +25,22 @@ export class MenuController {
     return this.menuService.create(createMenuDto);
   }
 
-  @Get()
-  async findAll(
-    @Query('currentPage', ParseIntPipe) currentPage: number = 1,
-    @Query('pageSize', ParseIntPipe) pageSize: number = 10,
-  ) {
-    const [data, total] = await this.menuService.findAll(currentPage, pageSize);
-    return {
-      data,
-      total,
-    };
-  }
+  // @Get()
+  // async findAll(
+  //   @Query('currentPage', ParseIntPipe) currentPage: number = 1,
+  //   @Query('pageSize', ParseIntPipe) pageSize: number = 10,
+  // ) {
+  //   const [data, total] = await this.menuService.findAll(currentPage, pageSize);
+  //   return {
+  //     data,
+  //     total,
+  //   };
+  // }
 
-  @Get('/menu')
-  async findAllMenu(@Query('type', new DefaultValuePipe('0,1')) type: string) {
+  @Get('/')
+  async findAllMenu(
+    @Query('type', new DefaultValuePipe('0,1,2')) type: string,
+  ) {
     return await this.menuService.findAllMenu(type);
   }
 

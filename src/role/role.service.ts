@@ -1,26 +1,74 @@
 import { Injectable } from '@nestjs/common';
-import { CreateRoleDto } from './dto/create-role.dto';
-import { UpdateRoleDto } from './dto/update-role.dto';
+import { CreateRoleDto, UpdateRoleDto } from './dto/role.dto';
+import { Role } from './entities/role.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository, Brackets } from 'typeorm';
 
 @Injectable()
 export class RoleService {
-  create(createRoleDto: CreateRoleDto) {
-    return 'This action adds a new role';
+  constructor(
+    @InjectRepository(Role) private roleRepository: Repository<Role>,
+  ) {}
+  async create(createRoleDto: CreateRoleDto) {
+    return await this.roleRepository.save(createRoleDto);
   }
 
-  findAll() {
-    return `This action returns all role`;
+  async findAll(
+    currentPage: number,
+    pageSize: number,
+    name: string,
+  ): Promise<[Role[], number]> {
+    const skip = (currentPage - 1) * pageSize;
+    return await this.roleRepository
+      .createQueryBuilder('role')
+      .where(
+        new Brackets((qb) => {
+          if (name) {
+            return qb.where('personnel.name LIKE :name', {
+              name: `%${name}%`,
+            });
+          } else {
+            return qb;
+          }
+        }),
+      )
+      .orderBy('role.id', 'DESC')
+      .skip(skip)
+      .take(pageSize)
+      .getManyAndCount();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} role`;
+  async findOne(id: string): Promise<Role> {
+    return await this.roleRepository.findOne({
+      where: {
+        id,
+      },
+    });
   }
 
-  update(id: number, updateRoleDto: UpdateRoleDto) {
-    return `This action updates a #${id} role`;
+  async update(id: string, updateRoleDto: UpdateRoleDto) {
+    const menu = await this.roleRepository.findOne({
+      where: {
+        id,
+      },
+    });
+    menu.name = updateRoleDto.name;
+    menu.remark = updateRoleDto.remark;
+    await this.roleRepository.save(menu);
+    return {
+      message: '编辑成功',
+      status: 200,
+      data: {
+        id: id,
+      },
+    };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} role`;
+  async multiRemove(ids: []) {
+    await this.roleRepository.delete(ids);
+    return {
+      message: '删除成功',
+      status: 200,
+    };
   }
 }

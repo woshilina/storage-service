@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateMenuDto, UpdateMenuDto } from './dto/menu.dto';
 import { Menu } from './entities/menu.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, In } from 'typeorm';
 import { flatArrayToTree } from '../common/utils';
 // import { Request } from 'express';
 
@@ -28,7 +28,24 @@ export class MenuService {
       skip: skip,
       take: pageSize,
     });
-    return [flatArrayToTree(list), total];
+    const pIds: Set<number> = new Set();
+    list.forEach(async (item: any) => {
+      if (item.parentId) {
+        pIds.add(item.parentId);
+      }
+    });
+    const ids: number[] = Array.from(pIds);
+    const parents = await this.findByIds(ids);
+    const customData = [];
+    for (const item of list) {
+      if (item.parentId) {
+        const parent = parents.find((ele) => ele.id == item.parentId);
+        customData.push({ ...item, parentName: parent.name });
+      } else {
+        customData.push({ ...item, parentName: '' });
+      }
+    }
+    return [flatArrayToTree(customData), total];
   }
 
   async findAllMenu(type: string): Promise<Menu[]> {
@@ -40,7 +57,24 @@ export class MenuService {
       })
       .orderBy({ 'menu.id': 'DESC', 'menu.orderNum': 'ASC' })
       .getMany();
-    return flatArrayToTree(list);
+    const pIds: Set<number> = new Set();
+    list.forEach(async (item: any) => {
+      if (item.parentId) {
+        pIds.add(item.parentId);
+      }
+    });
+    const ids: number[] = Array.from(pIds);
+    const parents = await this.findByIds(ids);
+    const customData = [];
+    for (const item of list) {
+      if (item.parentId) {
+        const parent = parents.find((ele) => ele.id == item.parentId);
+        customData.push({ ...item, parentName: parent.name });
+      } else {
+        customData.push({ ...item, parentName: '' });
+      }
+    }
+    return flatArrayToTree(customData);
   }
 
   async findOne(id: number): Promise<Menu> {
@@ -48,6 +82,12 @@ export class MenuService {
       where: {
         id,
       },
+    });
+  }
+
+  async findByIds(ids: number[]): Promise<Menu[]> {
+    return await this.menuRepository.findBy({
+      id: In(ids),
     });
   }
 
@@ -74,10 +114,23 @@ export class MenuService {
   }
 
   async multiRemove(ids: []) {
-    await this.menuRepository.delete(ids);
+    const children: Menu[] = await this.findChildren(ids);
+    const childIds = [];
+    if (children.length > 0) {
+      for (const child of children) {
+        childIds.push(child.id);
+      }
+    }
+    await this.menuRepository.delete([...ids, ...childIds]);
     return {
       message: '删除成功',
       status: 200,
     };
+  }
+
+  async findChildren(ids: number[]): Promise<Menu[]> {
+    return await this.menuRepository.findBy({
+      parentId: In(ids),
+    });
   }
 }

@@ -1,6 +1,17 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  //   ManyToOne,
+  //   OneToMany,
+  //   Tree,
+  //   TreeChildren,
+  //   TreeParent,
+  //   TreeLevelColumn,
+} from 'typeorm';
 
 @Entity()
+// @Tree('closure-table')
 export class Menu {
   @PrimaryGeneratedColumn()
   id: number;
@@ -22,6 +33,17 @@ export class Menu {
 
   @Column({ name: 'order_num' })
   orderNum: number; //排序
+
+  //   @TreeChildren()
+  //   children: Menu[];
+
+  //   @TreeParent()
+  //   parent: Menu;
+  //   @ManyToOne((type) => Menu, (menu) => menu.childMenus)
+  //   parentMenu: Menu;
+
+  //   @OneToMany((type) => Menu, (menu) => menu.parentMenu)
+  //   childMenus: Menu[];
 
   @Column({ nullable: true })
   create_by: string; //创建人
