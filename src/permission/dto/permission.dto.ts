@@ -1,5 +1,5 @@
 import { IsString, IsInt } from 'class-validator';
-class CreateMenuDto {
+class CreatePermissionDto {
   // @IsInt()
   parentId: number;
   @IsString()
@@ -7,13 +7,15 @@ class CreateMenuDto {
   @IsString()
   url: string; // 路由
   @IsString()
+  code: string; // 编码
+  @IsString()
   type: string; // 类型
   icon: string; //  图标
   @IsInt()
   orderNum: number; // 排序
 }
 
-class UpdateMenuDto {
+class UpdatePermissionDto {
   // @IsInt()
   parentId: number;
   @IsString()
@@ -21,10 +23,12 @@ class UpdateMenuDto {
   @IsString()
   url: string; // 路由
   @IsString()
+  code: string; // 编码
+  @IsString()
   type: string; // 类型
   icon: string; //  图标
   @IsInt()
   orderNum: number; // 排序
 }
 
-export { CreateMenuDto, UpdateMenuDto };
+export { CreatePermissionDto, UpdatePermissionDto };

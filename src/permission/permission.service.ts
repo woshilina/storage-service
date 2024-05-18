@@ -1,29 +1,31 @@
 import { Injectable } from '@nestjs/common';
-import { CreateMenuDto, UpdateMenuDto } from './dto/menu.dto';
-import { Menu } from './entities/menu.entity';
+import { CreatePermissionDto, UpdatePermissionDto } from './dto/permission.dto';
+
+import { Permission } from './entities/permission.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
 import { flatArrayToTree } from '../common/utils';
 // import { Request } from 'express';
 
 @Injectable()
-export class MenuService {
+export class PermissionService {
   constructor(
-    @InjectRepository(Menu) private menuRepository: Repository<Menu>,
+    @InjectRepository(Permission)
+    private permissionRepository: Repository<Permission>,
   ) {}
-  async create(createMenuDto: CreateMenuDto) {
-    return await this.menuRepository.save(createMenuDto);
+  async create(createPermissionDto: CreatePermissionDto) {
+    return await this.permissionRepository.save(createPermissionDto);
   }
 
   async findAll(
     currentPage: number,
     pageSize: number,
-  ): Promise<[Menu[], number]> {
+  ): Promise<[Permission[], number]> {
     const skip = (currentPage - 1) * pageSize;
-    const [list, total] = await this.menuRepository.findAndCount({
+    const [list, total] = await this.permissionRepository.findAndCount({
       order: {
-        id: 'DESC',
         orderNum: 'ASC',
+        id: 'DESC',
       },
       skip: skip,
       take: pageSize,
@@ -48,14 +50,14 @@ export class MenuService {
     return [flatArrayToTree(customData), total];
   }
 
-  async findAllMenu(type: string): Promise<Menu[]> {
+  async findAllPermission(type: string): Promise<Permission[]> {
     const types = type.split(',');
-    const list = await this.menuRepository
-      .createQueryBuilder('menu')
-      .where('menu.type IN (:...types)', {
+    const list = await this.permissionRepository
+      .createQueryBuilder('permission')
+      .where('permission.type IN (:...types)', {
         types: types,
       })
-      .orderBy({ 'menu.id': 'DESC', 'menu.orderNum': 'ASC' })
+      .orderBy({ 'permission.orderNum': 'ASC', 'permission.id': 'DESC' })
       .getMany();
     const pIds: Set<number> = new Set();
     list.forEach(async (item: any) => {
@@ -77,33 +79,33 @@ export class MenuService {
     return flatArrayToTree(customData);
   }
 
-  async findOne(id: number): Promise<Menu> {
-    return await this.menuRepository.findOne({
+  async findOne(id: number): Promise<Permission> {
+    return await this.permissionRepository.findOne({
       where: {
         id,
       },
     });
   }
 
-  async findByIds(ids: number[]): Promise<Menu[]> {
-    return await this.menuRepository.findBy({
+  async findByIds(ids: number[]): Promise<Permission[]> {
+    return await this.permissionRepository.findBy({
       id: In(ids),
     });
   }
 
-  async update(id: number, updateMenuDto: UpdateMenuDto) {
-    const menu = await this.menuRepository.findOne({
+  async update(id: number, updatePermissionDto: UpdatePermissionDto) {
+    const permission = await this.permissionRepository.findOne({
       where: {
         id,
       },
     });
-    menu.parentId = updateMenuDto.parentId;
-    menu.name = updateMenuDto.name;
-    menu.url = updateMenuDto.url;
-    menu.type = updateMenuDto.type;
-    menu.icon = updateMenuDto.icon;
-    menu.orderNum = updateMenuDto.orderNum;
-    await this.menuRepository.save(menu);
+    permission.parentId = updatePermissionDto.parentId;
+    permission.name = updatePermissionDto.name;
+    permission.url = updatePermissionDto.url;
+    permission.type = updatePermissionDto.type;
+    permission.icon = updatePermissionDto.icon;
+    permission.orderNum = updatePermissionDto.orderNum;
+    await this.permissionRepository.save(permission);
     return {
       message: '编辑成功',
       status: 200,
@@ -114,22 +116,22 @@ export class MenuService {
   }
 
   async multiRemove(ids: []) {
-    const children: Menu[] = await this.findChildren(ids);
+    const children: Permission[] = await this.findChildren(ids);
     const childIds = [];
     if (children.length > 0) {
       for (const child of children) {
         childIds.push(child.id);
       }
     }
-    await this.menuRepository.delete([...ids, ...childIds]);
+    await this.permissionRepository.delete([...ids, ...childIds]);
     return {
       message: '删除成功',
       status: 200,
     };
   }
 
-  async findChildren(ids: number[]): Promise<Menu[]> {
-    return await this.menuRepository.findBy({
+  async findChildren(ids: number[]): Promise<Permission[]> {
+    return await this.permissionRepository.findBy({
       parentId: In(ids),
     });
   }

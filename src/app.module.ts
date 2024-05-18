@@ -8,7 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { APP_FILTER, APP_PIPE } from '@nestjs/core';
 import { HttpExceptionFilter } from './common/http-exception.filter';
 import { ValidationPipe } from './common/validation.pipe';
-import { MenuModule } from './menu/menu.module';
+import { PermissionModule } from './permission/permission.module';
 import { RoleModule } from './role/role.module';
 
 @Module({
@@ -27,7 +27,7 @@ import { RoleModule } from './role/role.module';
     UserModule,
     PersonnelModule,
     AuthModule,
-    MenuModule,
+    PermissionModule,
     RoleModule,
   ],
   controllers: [AppController],
