@@ -49,6 +49,10 @@ export class RoleService {
       .getManyAndCount();
   }
 
+  async findAllRoles(): Promise<Role[]> {
+    return await this.roleRepository.find();
+  }
+
   async findOne(id: number) {
     const role = await this.roleRepository.findOne({
       where: {

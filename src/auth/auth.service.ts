@@ -10,10 +10,10 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
   async signIn(
-    username: string,
+    account: string,
     password: string,
-  ): Promise<{ access_token: string; username: string }> {
-    const user = await this.userService.findOne(username);
+  ): Promise<{ access_token: string; account: string; name: string }> {
+    const user = await this.userService.findOne(account);
     if (!user) {
       throw new HttpException('用户名不正确！', HttpStatus.UNAUTHORIZED);
     }
@@ -21,10 +21,11 @@ export class AuthService {
     if (!compareResult) {
       throw new HttpException('密码错误！', HttpStatus.UNAUTHORIZED);
     }
-    const payload = { sub: user.id, username: user.username };
+    const payload = { sub: user.id, account: user.account };
     return {
       access_token: await this.jwtService.signAsync(payload),
-      username: user.username,
+      account: user.account,
+      name: user.name,
     };
   }
 }

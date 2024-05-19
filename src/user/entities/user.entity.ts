@@ -1,5 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  BeforeInsert,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
 import { BcryptService } from '../../common/bcryptjs';
+import { Role } from 'src/role/entities/role.entity';
 
 @Entity()
 export class User {
@@ -7,25 +15,16 @@ export class User {
   id: number;
 
   @Column()
-  username: string;
+  account: string;
 
   @Column()
   password: string;
 
-  @Column({ nullable: true })
-  nickname: string; //昵称
-
-  @Column({ nullable: true })
-  avatar: string; //头像
+  @Column()
+  name: string; //姓名
 
   @Column({ nullable: true })
   email: string; //邮箱
-
-  @Column({ nullable: true })
-  role: string; //角色
-
-  @Column({ nullable: true })
-  salt: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   create_time: Date;
@@ -37,4 +36,7 @@ export class User {
   async encryptPwd() {
     this.password = await BcryptService.hash(this.password);
   }
+  @ManyToMany(() => Role)
+  @JoinTable()
+  roles: Role[];
 }

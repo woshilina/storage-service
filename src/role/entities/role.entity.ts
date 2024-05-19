@@ -8,7 +8,7 @@ export class Role {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   remark: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
