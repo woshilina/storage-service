@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { RoleService } from './role.service';
 import { CreateRoleDto, UpdateRoleDto } from './dto/role.dto';
-import { DeleteDto } from './dto/delete.dto';
+import { DeleteDto } from 'src/common/dto/delete.dto';
 
 @Controller('/api/v1/roles')
 export class RoleController {

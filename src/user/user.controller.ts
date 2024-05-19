@@ -6,13 +6,12 @@ import {
   Put,
   Param,
   Delete,
-  Request,
   Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { DeleteDto } from './dto/delete.dto';
+import { DeleteDto } from 'src/common/dto/delete.dto';
 import { Public } from '../auth/decorator/public.decorator';
 
 // import { ValidationPipe } from '../pipe/validation/validation.pipe';

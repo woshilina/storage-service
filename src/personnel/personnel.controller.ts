@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { PersonnelService } from './personnel.service';
 import { CreatePersonnelDto, UpdatePersonnelDto } from './dto/personnel.dto';
-import { DeleteDto } from './dto/delete.dto';
+import { DeleteDto } from 'src/common/dto/delete.dto';
 
 @Controller('/api/v1/personnel')
 export class PersonnelController {
