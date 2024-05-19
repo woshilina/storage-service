@@ -55,7 +55,7 @@ export class UserService {
       .where(
         new Brackets((qb) => {
           if (account) {
-            return qb.where('personnel.name LIKE :name', {
+            return qb.where('user.account LIKE :account', {
               account: `%${account}%`,
             });
           } else {

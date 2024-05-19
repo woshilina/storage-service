@@ -35,7 +35,7 @@ export class RoleService {
       .where(
         new Brackets((qb) => {
           if (name) {
-            return qb.where('personnel.name LIKE :name', {
+            return qb.where('role.name LIKE :name', {
               name: `%${name}%`,
             });
           } else {

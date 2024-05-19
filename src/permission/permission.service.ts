@@ -30,24 +30,25 @@ export class PermissionService {
       skip: skip,
       take: pageSize,
     });
-    const pIds: Set<number> = new Set();
-    list.forEach(async (item: any) => {
-      if (item.parentId) {
-        pIds.add(item.parentId);
-      }
-    });
-    const ids: number[] = Array.from(pIds);
-    const parents = await this.findByIds(ids);
-    const customData = [];
-    for (const item of list) {
-      if (item.parentId) {
-        const parent = parents.find((ele) => ele.id == item.parentId);
-        customData.push({ ...item, parentName: parent.name });
-      } else {
-        customData.push({ ...item, parentName: '' });
-      }
-    }
-    return [flatArrayToTree(customData), total];
+    // 添加 parentName 字段
+    // const pIds: Set<number> = new Set();
+    // list.forEach(async (item: any) => {
+    //   if (item.parentId) {
+    //     pIds.add(item.parentId);
+    //   }
+    // });
+    // const ids: number[] = Array.from(pIds);
+    // const parents = await this.findByIds(ids);
+    // const customData = [];
+    // for (const item of list) {
+    //   if (item.parentId) {
+    //     const parent = parents.find((ele) => ele.id == item.parentId);
+    //     customData.push({ ...item, parentName: parent.name });
+    //   } else {
+    //     customData.push({ ...item, parentName: '' });
+    //   }
+    // }
+    return [flatArrayToTree(list), total];
   }
 
   async findAllPermission(type: string): Promise<Permission[]> {
