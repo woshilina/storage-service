@@ -31,9 +31,12 @@ export class UserService {
           id: In(createUserDto.roleIds),
         },
       });
-      const entity = Object.assign(new User(), createUserDto);
-      entity.roles = roles;
-      await this.userRepository.save(entity);
+      // still entity instance
+      const toSaveUser = this.userRepository.create({
+        ...createUserDto,
+        roles,
+      });
+      await this.userRepository.save(toSaveUser);
       return {
         message: '注册成功',
         status: 200,
@@ -123,6 +126,19 @@ export class UserService {
     await this.userRepository.save(user);
     return {
       message: '编辑成功',
+      status: 200,
+      data: {
+        id: id,
+      },
+    };
+  }
+
+  async resetPassword(id: number) {
+    const newUser = { password: '123456' };
+    const userDto = this.userRepository.create(newUser);
+    await this.userRepository.update(id, userDto);
+    return {
+      message: '重置成功',
       status: 200,
       data: {
         id: id,

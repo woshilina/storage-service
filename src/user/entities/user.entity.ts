@@ -3,6 +3,7 @@ import {
   Column,
   PrimaryGeneratedColumn,
   BeforeInsert,
+  BeforeUpdate,
   ManyToMany,
   JoinTable,
 } from 'typeorm';
@@ -33,6 +34,7 @@ export class User {
   update_time: Date;
 
   @BeforeInsert()
+  @BeforeUpdate()
   async encryptPwd() {
     this.password = await BcryptService.hash(this.password);
   }
