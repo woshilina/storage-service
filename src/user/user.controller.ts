@@ -13,6 +13,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { DeleteDto } from 'src/common/dto/delete.dto';
+import { PasswordDto } from './dto/password.dto';
 import { Public } from '../auth/decorator/public.decorator';
 
 // import { ValidationPipe } from '../pipe/validation/validation.pipe';
@@ -52,8 +53,8 @@ export class UserController {
   }
 
   @Patch(':id')
-  resetPassword(@Param('id') id: string) {
-    return this.userService.resetPassword(+id);
+  resetPassword(@Param('id') id: string, @Body() passwordDto: PasswordDto) {
+    return this.userService.resetPassword(+id, passwordDto);
   }
 
   @Delete(':id')
