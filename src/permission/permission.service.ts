@@ -103,6 +103,7 @@ export class PermissionService {
     permission.parentId = updatePermissionDto.parentId;
     permission.name = updatePermissionDto.name;
     permission.url = updatePermissionDto.url;
+    permission.code = updatePermissionDto.code;
     permission.type = updatePermissionDto.type;
     permission.icon = updatePermissionDto.icon;
     permission.orderNum = updatePermissionDto.orderNum;

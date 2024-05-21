@@ -69,6 +69,17 @@ export class RoleService {
     return { ...role, permissionIds: permIds };
   }
 
+  async findRolesPerms(roleIds: number[]) {
+    const rolePerms = await this.rolePermRepository.find({
+      where: { roleId: In(roleIds) },
+    });
+    const permIds = [];
+    rolePerms.forEach((item) => {
+      permIds.push(item.permissionId);
+    });
+    return permIds;
+  }
+
   async update(id: number, updateRoleDto: UpdateRoleDto) {
     const role = await this.roleRepository.findOne({
       where: {
