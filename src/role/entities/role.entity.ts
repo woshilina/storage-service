@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
+import { Permission } from 'src/permission/entities/permission.entity';
 
 @Entity()
 export class Role {
@@ -16,4 +23,8 @@ export class Role {
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   update_time: Date;
+
+  @ManyToMany(() => Permission)
+  @JoinTable()
+  permisssions: Permission[];
 }

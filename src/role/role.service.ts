@@ -1,27 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRoleDto, UpdateRoleDto } from './dto/role.dto';
 import { Role } from './entities/role.entity';
-import { RolePermission } from './entities/role-permission.entity';
+// import { RolePermission } from './entities/role-permission.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Brackets, In } from 'typeorm';
+import { Permission } from 'src/permission/entities/permission.entity';
 
 @Injectable()
 export class RoleService {
   constructor(
     @InjectRepository(Role) private roleRepository: Repository<Role>,
-    @InjectRepository(RolePermission)
-    private rolePermRepository: Repository<RolePermission>,
+    @InjectRepository(Permission)
+    private permissionRepository: Repository<Permission>,
   ) {}
   async create(createRoleDto: CreateRoleDto) {
-    const role = await this.roleRepository.save(createRoleDto);
-    const rolePerms = [];
-    createRoleDto.permissionIds.forEach((id) => {
-      rolePerms.push({
-        roleId: role.id,
-        permissionId: id,
-      });
+    const permissions = await this.permissionRepository.find({
+      where: {
+        id: In(createRoleDto.permissionIds),
+      },
     });
-    return await this.rolePermRepository.save(rolePerms);
+    return await this.roleRepository.save({ ...createRoleDto, permissions });
   }
 
   async findAll(
@@ -54,30 +52,33 @@ export class RoleService {
   }
 
   async findOne(id: number) {
-    const role = await this.roleRepository.findOne({
+    return await this.roleRepository.findOne({
       where: {
         id,
       },
+      relations: {
+        permisssions: true,
+      },
     });
-    const rolePerms = await this.rolePermRepository.find({
-      where: { roleId: role.id },
-    });
-    const permIds = [];
-    rolePerms.forEach((item) => {
-      permIds.push(item.permissionId);
-    });
-    return { ...role, permissionIds: permIds };
   }
 
   async findRolesPerms(roleIds: number[]) {
-    const rolePerms = await this.rolePermRepository.find({
-      where: { roleId: In(roleIds) },
+    const roles = await this.roleRepository.find({
+      where: { id: In(roleIds) },
+      relations: {
+        permisssions: true,
+      },
     });
-    const permIds = [];
-    rolePerms.forEach((item) => {
-      permIds.push(item.permissionId);
+    const permIds = new Set([]);
+    roles.forEach((role) => {
+      if (role.permisssions && role.permisssions.length) {
+        role.permisssions.forEach((item) => {
+          permIds.add(item.id);
+        });
+      }
     });
-    return permIds;
+    const permissionIds = Array.from(permIds);
+    return permissionIds;
   }
 
   async update(id: number, updateRoleDto: UpdateRoleDto) {
@@ -88,27 +89,17 @@ export class RoleService {
     });
     role.name = updateRoleDto.name;
     role.remark = updateRoleDto.remark;
+    if (updateRoleDto.permissionIds && updateRoleDto.permissionIds.length) {
+      const permissions = await this.permissionRepository.find({
+        where: {
+          id: In(updateRoleDto.permissionIds),
+        },
+      });
+      role.permisssions = permissions;
+    } else {
+      role.permisssions = [];
+    }
     await this.roleRepository.save(role);
-    //find 该角色对应的所有角色权限数据
-    const rolePerms = await this.rolePermRepository.find({
-      where: {
-        roleId: id,
-      },
-    });
-
-    // delete 该角色对应的所有角色权限数据
-    const rolePermIds = [];
-    rolePerms.forEach((item) => {
-      rolePermIds.push(item.id);
-    });
-    await this.rolePermRepository.delete(rolePermIds);
-
-    // save 该角色对应的所有新的角色权限数据
-    const newRolePerms = [];
-    updateRoleDto.permissionIds.forEach((item) => {
-      newRolePerms.push({ roleId: id, permissionId: item });
-    });
-    await this.rolePermRepository.save(newRolePerms);
     return {
       message: '编辑成功',
       status: 200,
@@ -119,17 +110,19 @@ export class RoleService {
   }
 
   async multiRemove(ids: []) {
-    await this.roleRepository.delete(ids);
-    const rolePerms = await this.rolePermRepository.find({
+    const roles = await this.roleRepository.find({
+      relations: {
+        permisssions: true,
+      },
       where: {
-        roleId: In(ids),
+        id: In(ids),
       },
     });
-    const rolePermIds = [];
-    rolePerms.forEach((item) => {
-      rolePermIds.push(item.id);
+    roles.forEach((user) => {
+      user.permisssions = [];
     });
-    await this.rolePermRepository.delete(rolePermIds);
+    await this.roleRepository.save(roles);
+    await this.roleRepository.delete(ids);
     return {
       message: '删除成功',
       status: 200,

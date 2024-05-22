@@ -128,6 +128,8 @@ export class UserService {
         },
       });
       user.roles = roles;
+    } else {
+      user.roles = [];
     }
 
     await this.userRepository.save(user);
