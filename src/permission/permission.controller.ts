@@ -38,10 +38,10 @@ export class PermissionController {
   // }
 
   @Get('/')
-  async findAllPermission(
+  async findPermissionByType(
     @Query('type', new DefaultValuePipe('0,1,2')) type: string,
   ) {
-    return await this.permissionService.findAllPermission(type);
+    return await this.permissionService.findPermissionByType(type);
   }
 
   @Get(':id')

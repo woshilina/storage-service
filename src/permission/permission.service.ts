@@ -51,7 +51,7 @@ export class PermissionService {
     return [flatArrayToTree(list), total];
   }
 
-  async findAllPermission(type: string): Promise<Permission[]> {
+  async findPermissionByType(type: string): Promise<Permission[]> {
     const types = type.split(',');
     const list = await this.permissionRepository
       .createQueryBuilder('permission')
