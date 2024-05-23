@@ -93,6 +93,35 @@ export class PermissionService {
       id: In(ids),
     });
   }
+  async findMenuPerms(ids: number[], perms: Permission[]) {
+    const permissions = await this.findByIds(ids);
+    perms.push(...permissions);
+    const newIds = [];
+    permissions.forEach((item) => {
+      if (item.parentId) {
+        newIds.push(item.parentId);
+      }
+    });
+    if (newIds.length) {
+      return this.findMenuPerms(newIds, perms);
+    } else {
+      return perms;
+    }
+  }
+  async findMenusByPermIds(ids: number[]): Promise<Permission[]> {
+    const perms: Permission[] = [];
+    const permsArr = await this.findMenuPerms(ids, perms);
+    for (let i = 0; i < permsArr.length - 1; i++) {
+      for (let j = i + 1; j < permsArr.length; j++) {
+        if (permsArr[i].id == permsArr[j].id) {
+          permsArr.splice(j, 1);
+          // splice删除了一个元素，下标要减一，否则循环会漏掉一个元素(多个相邻的元素 可能会漏掉删除元素)
+          j--;
+        }
+      }
+    }
+    return permsArr;
+  }
 
   async update(id: number, updatePermissionDto: UpdatePermissionDto) {
     const permission = await this.permissionRepository.findOne({

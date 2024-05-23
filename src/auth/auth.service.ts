@@ -38,15 +38,22 @@ export class AuthService {
       throw new HttpException('密码错误！', HttpStatus.UNAUTHORIZED);
     }
     const roleIds = user.roles.map((role) => role.id);
-    const permIds = await this.roleService.findRolesPerms(roleIds);
-    const permissions = await this.permissionService.findByIds(permIds);
-    // console.log(permissions);
+    const permIds = await this.roleService.findRolesPermIds(roleIds);
+    const permissions =
+      await this.permissionService.findMenusByPermIds(permIds);
     const menus = permissions.filter((perm) => perm.type != '2');
     const menuTree = flatArrayToTree(menus);
     const routes = permissions.filter((perm) => perm.type == '1');
     const permCodes =
       permissions.length > 0 ? permissions.map((perm) => perm.code) : [];
-    const payload = { sub: user.id, account: user.account };
+    const payload = {
+      account: user.account,
+      name: user.name,
+      sub: user.id,
+      roles: roleIds,
+      permissions: permCodes,
+    };
+
     return {
       access_token: await this.jwtService.signAsync(payload),
       user: user,

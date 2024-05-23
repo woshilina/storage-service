@@ -14,6 +14,7 @@ import {
 import { PermissionService } from './permission.service';
 import { CreatePermissionDto, UpdatePermissionDto } from './dto/permission.dto';
 import { DeleteDto } from 'src/common/dto/delete.dto';
+import { RequirePermission } from 'src/common/decorator/require-permission.decorator';
 // import { Request } from 'express';
 
 @Controller('/api/v1/permissions')
@@ -21,6 +22,7 @@ export class PermissionController {
   constructor(private readonly permissionService: PermissionService) {}
 
   @Post()
+  @RequirePermission(['permission:create'])
   create(@Body() createPermissionDto: CreatePermissionDto) {
     return this.permissionService.create(createPermissionDto);
   }
@@ -50,6 +52,7 @@ export class PermissionController {
   }
 
   @Put(':id')
+  @RequirePermission(['permission:edit'])
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updatePermissionDto: UpdatePermissionDto,
@@ -58,6 +61,7 @@ export class PermissionController {
   }
 
   @Delete('/')
+  @RequirePermission(['permission:delete'])
   multiRemove(@Body() body: DeleteDto) {
     return this.permissionService.multiRemove(body.ids);
   }

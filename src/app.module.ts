@@ -5,9 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { PersonnelModule } from './personnel/personnel.module';
 import { AuthModule } from './auth/auth.module';
-import { APP_FILTER, APP_PIPE } from '@nestjs/core';
+import { APP_FILTER, APP_PIPE, APP_GUARD } from '@nestjs/core';
 import { HttpExceptionFilter } from './common/http-exception.filter';
 import { ValidationPipe } from './common/validation.pipe';
+import { PermissionGuard } from 'src/common/guard/permission.guard';
 import { PermissionModule } from './permission/permission.module';
 import { RoleModule } from './role/role.module';
 
@@ -41,6 +42,7 @@ import { RoleModule } from './role/role.module';
       provide: APP_PIPE,
       useClass: ValidationPipe,
     },
+    { provide: APP_GUARD, useClass: PermissionGuard },
   ],
 })
 export class AppModule {}

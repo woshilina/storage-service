@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRoleDto, UpdateRoleDto } from './dto/role.dto';
 import { Role } from './entities/role.entity';
-// import { RolePermission } from './entities/role-permission.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Brackets, In } from 'typeorm';
 import { Permission } from 'src/permission/entities/permission.entity';
@@ -57,22 +56,32 @@ export class RoleService {
         id,
       },
       relations: {
-        permisssions: true,
+        permissions: true,
       },
     });
   }
 
-  async findRolesPerms(roleIds: number[]) {
+  async findRolesByIds(roleIds: number[]) {
+    return await this.roleRepository.find({
+      where: {
+        id: In(roleIds),
+      },
+      relations: {
+        permissions: true,
+      },
+    });
+  }
+  async findRolesPermIds(roleIds: number[]) {
     const roles = await this.roleRepository.find({
       where: { id: In(roleIds) },
       relations: {
-        permisssions: true,
+        permissions: true,
       },
     });
     const permIds = new Set([]);
     roles.forEach((role) => {
-      if (role.permisssions && role.permisssions.length) {
-        role.permisssions.forEach((item) => {
+      if (role.permissions && role.permissions.length) {
+        role.permissions.forEach((item) => {
           permIds.add(item.id);
         });
       }
@@ -95,9 +104,9 @@ export class RoleService {
           id: In(updateRoleDto.permissionIds),
         },
       });
-      role.permisssions = permissions;
+      role.permissions = permissions;
     } else {
-      role.permisssions = [];
+      role.permissions = [];
     }
     await this.roleRepository.save(role);
     return {
@@ -112,14 +121,14 @@ export class RoleService {
   async multiRemove(ids: []) {
     const roles = await this.roleRepository.find({
       relations: {
-        permisssions: true,
+        permissions: true,
       },
       where: {
         id: In(ids),
       },
     });
     roles.forEach((user) => {
-      user.permisssions = [];
+      user.permissions = [];
     });
     await this.roleRepository.save(roles);
     await this.roleRepository.delete(ids);

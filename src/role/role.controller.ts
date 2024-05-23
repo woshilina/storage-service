@@ -11,17 +11,20 @@ import {
 import { RoleService } from './role.service';
 import { CreateRoleDto, UpdateRoleDto } from './dto/role.dto';
 import { DeleteDto } from 'src/common/dto/delete.dto';
+import { RequirePermission } from 'src/common/decorator/require-permission.decorator';
 
 @Controller('/api/v1/roles')
 export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 
   @Post()
+  @RequirePermission(['role:create'])
   create(@Body() createRoleDto: CreateRoleDto) {
     return this.roleService.create(createRoleDto);
   }
 
   @Get()
+  @RequirePermission(['role:list'])
   async findAll(
     @Query('currentPage') currentPage: number = 1,
     @Query('pageSize') pageSize: number = 10,
@@ -46,6 +49,7 @@ export class RoleController {
   }
 
   @Put(':id')
+  @RequirePermission(['role:edit'])
   update(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto) {
     return this.roleService.update(+id, updateRoleDto);
   }
@@ -55,6 +59,7 @@ export class RoleController {
   //   return this.roleService.remove(id);
   // }
   @Delete('/')
+  @RequirePermission(['role:delete'])
   multiRemove(@Body() body: DeleteDto) {
     return this.roleService.multiRemove(body.ids);
   }

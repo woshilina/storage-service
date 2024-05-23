@@ -11,17 +11,20 @@ import {
 import { PersonnelService } from './personnel.service';
 import { CreatePersonnelDto, UpdatePersonnelDto } from './dto/personnel.dto';
 import { DeleteDto } from 'src/common/dto/delete.dto';
+import { RequirePermission } from 'src/common/decorator/require-permission.decorator';
 
 @Controller('/api/v1/personnel')
 export class PersonnelController {
   constructor(private readonly personnelService: PersonnelService) {}
 
   @Post('/')
+  @RequirePermission(['person:create'])
   create(@Body() createPersonnelDto: CreatePersonnelDto) {
     return this.personnelService.create(createPersonnelDto);
   }
 
   @Get('/')
+  @RequirePermission(['person:list'])
   async findAll(
     @Query('currentPage') currentPage: number = 1,
     @Query('pageSize') pageSize: number = 10,
@@ -53,6 +56,7 @@ export class PersonnelController {
   }
 
   @Put(':id')
+  @RequirePermission(['person:edit'])
   update(
     @Param('id') id: string,
     @Body() updatePersonnelDto: UpdatePersonnelDto,
@@ -61,6 +65,7 @@ export class PersonnelController {
   }
 
   @Delete('/')
+  @RequirePermission(['person:delete'])
   multiRemove(@Body() body: DeleteDto) {
     return this.personnelService.multiRemove(body.ids);
   }
