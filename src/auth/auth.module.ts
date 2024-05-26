@@ -3,9 +3,10 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthService } from './auth.service';
 import { UserModule } from '../user/user.module';
 import { AuthController } from './auth.controller';
-import { AuthGuard } from './auth.guard';
+import { JwtAuthGuard } from './jwt-auth.guard';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './local.strategy';
+import { JwtStrategy } from './jwt.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { RoleModule } from 'src/role/role.module';
@@ -25,9 +26,10 @@ import { PermissionModule } from 'src/permission/permission.module';
   providers: [
     AuthService,
     LocalStrategy,
+    JwtStrategy,
     {
       provide: APP_GUARD,
-      useClass: AuthGuard,
+      useClass: JwtAuthGuard,
     },
   ],
   controllers: [AuthController],

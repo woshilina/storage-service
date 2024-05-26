@@ -35,6 +35,7 @@ export class PermissionGuard implements CanActivate {
     if (!requirePermissions) {
       return true;
     }
+
     for (let i = 0; i < requirePermissions.length; i++) {
       const curPermission = requirePermissions[i];
       const found = data.permissions.find((item) => item === curPermission);

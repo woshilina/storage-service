@@ -16,7 +16,8 @@ export class AuthService {
     private permissionService: PermissionService,
     private jwtService: JwtService,
   ) {}
-  async signIn(
+
+  async validateUser(
     account: string,
     password: string,
   ): Promise<{
@@ -24,9 +25,6 @@ export class AuthService {
     user: User;
     menuTree: string[];
     routes: Permission[];
-    // account: string;
-    // name: string;
-    // id: string;
     permissions: string[];
   }> {
     const user = await this.userService.findOne(account);
