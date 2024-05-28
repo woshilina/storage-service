@@ -18,7 +18,7 @@ export class PersonnelController {
   constructor(private readonly personnelService: PersonnelService) {}
 
   @Post('/')
-  @RequirePermission(['person:create'])
+  @RequirePermission(['person:add'])
   create(@Body() createPersonnelDto: CreatePersonnelDto) {
     return this.personnelService.create(createPersonnelDto);
   }

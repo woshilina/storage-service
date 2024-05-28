@@ -18,7 +18,7 @@ export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 
   @Post()
-  @RequirePermission(['role:create'])
+  @RequirePermission(['role:add'])
   create(@Body() createRoleDto: CreateRoleDto) {
     return this.roleService.create(createRoleDto);
   }

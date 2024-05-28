@@ -108,9 +108,11 @@ export class PermissionService {
       return perms;
     }
   }
-  async findMenusByPermIds(ids: number[]): Promise<Permission[]> {
+  async findPermsByIds(ids: number[]): Promise<Permission[]> {
     const perms: Permission[] = [];
+    // 递归查找父元素 直至最顶层
     const permsArr = await this.findMenuPerms(ids, perms);
+    // 去重
     for (let i = 0; i < permsArr.length - 1; i++) {
       for (let j = i + 1; j < permsArr.length; j++) {
         if (permsArr[i].id == permsArr[j].id) {

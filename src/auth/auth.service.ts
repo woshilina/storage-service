@@ -5,8 +5,8 @@ import { RoleService } from '../role/role.service';
 import { PermissionService } from '../permission/permission.service';
 import { JwtService } from '@nestjs/jwt';
 import { BcryptService } from '../common/bcryptjs';
-import { flatArrayToTree } from '../common/utils';
-import { Permission } from 'src/permission/entities/permission.entity';
+// import { flatArrayToTree } from '../common/utils';
+// import { Permission } from 'src/permission/entities/permission.entity';
 
 @Injectable()
 export class AuthService {
@@ -23,8 +23,8 @@ export class AuthService {
   ): Promise<{
     access_token: string;
     user: User;
-    menuTree: string[];
-    routes: Permission[];
+    // menuTree: string[];
+    // routes: Permission[];
     permissions: string[];
   }> {
     const user = await this.userService.findOne(account);
@@ -37,11 +37,10 @@ export class AuthService {
     }
     const roleIds = user.roles.map((role) => role.id);
     const permIds = await this.roleService.findRolesPermIds(roleIds);
-    const permissions =
-      await this.permissionService.findMenusByPermIds(permIds);
-    const menus = permissions.filter((perm) => perm.type != '2');
-    const menuTree = flatArrayToTree(menus);
-    const routes = permissions.filter((perm) => perm.type == '1');
+    const permissions = await this.permissionService.findPermsByIds(permIds);
+    // const menus = permissions.filter((perm) => perm.type != '2');
+    // const menuTree = flatArrayToTree(menus);
+    // const routes = permissions.filter((perm) => perm.type == '1');
     const permCodes =
       permissions.length > 0 ? permissions.map((perm) => perm.code) : [];
     const payload = {
@@ -55,8 +54,8 @@ export class AuthService {
     return {
       access_token: await this.jwtService.signAsync(payload),
       user: user,
-      menuTree: menuTree,
-      routes: routes,
+      // menuTree: menuTree,
+      // routes: routes,
       permissions: permCodes,
     };
   }

@@ -22,7 +22,7 @@ export class PermissionController {
   constructor(private readonly permissionService: PermissionService) {}
 
   @Post()
-  @RequirePermission(['permission:create'])
+  @RequirePermission(['permission:add'])
   create(@Body() createPermissionDto: CreatePermissionDto) {
     return this.permissionService.create(createPermissionDto);
   }
