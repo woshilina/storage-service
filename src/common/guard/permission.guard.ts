@@ -40,7 +40,6 @@ export class PermissionGuard implements CanActivate {
       });
       request['permissions'] = payload;
     } catch {
-      console.log('error');
       throw new UnauthorizedException();
     }
     for (let i = 0; i < requirePermissions.length; i++) {

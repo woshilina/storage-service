@@ -31,10 +31,4 @@ export class AuthController {
   //   console.log(signInDto);
   //   return this.authService.validateUser(signInDto.account, signInDto.password);
   // }
-
-  //   @UseGuards(AuthGuard)
-  //   @Get('profile')
-  //   getProfile(@Request() req) {
-  //     return req.user;
-  //   }
 }
