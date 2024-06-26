@@ -1,24 +1,21 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
-export class Personnel {
+export class Goods {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  name: string; //姓名
+  name: string; //名称
 
   @Column()
-  sex: string; //性别
+  specification: string; //规格
 
   @Column()
-  age: number; // 年龄
+  quantity: number; // 数量
 
   @Column({ nullable: true })
-  IDNo: string; //身份证号码
+  weight: string; // 重量
 
   @Column({ nullable: true })
-  avatar: string; //头像
-
-  @Column({ nullable: true })
-  email: string; //邮箱
+  remark: string; //备注
 }

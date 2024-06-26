@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
-import { PersonnelModule } from './personnel/personnel.module';
+import { GoodsModule } from './goods/goods.module';
 import { AuthModule } from './auth/auth.module';
 import { APP_FILTER, APP_PIPE, APP_GUARD } from '@nestjs/core';
 import { HttpExceptionFilter } from './common/http-exception.filter';
@@ -26,7 +26,7 @@ import { RoleModule } from './role/role.module';
       autoLoadEntities: true, //将自动加载实体forFeature()方法注册的每个实体都将自动添加到配置对象的实体
     }),
     UserModule,
-    PersonnelModule,
+    GoodsModule,
     AuthModule,
     PermissionModule,
     RoleModule,
