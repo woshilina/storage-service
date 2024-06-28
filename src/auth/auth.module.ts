@@ -20,7 +20,7 @@ import { PermissionModule } from 'src/permission/permission.module';
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '3000s' },
+      // signOptions: { expiresIn: '3000s' },
     }),
   ],
   providers: [

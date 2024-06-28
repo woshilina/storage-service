@@ -40,6 +40,7 @@ export class PermissionController {
   // }
 
   @Get('/')
+  @RequirePermission(['permission:list'])
   async findPermissionByType(
     @Query('type', new DefaultValuePipe('0,1,2')) type: string,
   ) {

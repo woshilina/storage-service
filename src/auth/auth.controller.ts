@@ -1,7 +1,8 @@
 import {
   // Body,
   Controller,
-  //   Get,
+  Get,
+  Query,
   Post,
   // HttpCode,
   // HttpStatus,
@@ -22,13 +23,9 @@ export class AuthController {
   async login(@Request() req) {
     return req.user;
   }
-
-  // @Public()
-  // @UseGuards(LocalAuthGuard)
-  // @HttpCode(HttpStatus.OK)
-  // @Post('login')
-  // signIn(@Body() signInDto: Record<string, any>) {
-  //   console.log(signInDto);
-  //   return this.authService.validateUser(signInDto.account, signInDto.password);
-  // }
+  @Public()
+  @Get('/refreshtoken')
+  refresh(@Query('refreshToken') refreshToken: string) {
+    return this.authService.refreshToken(refreshToken);
+  }
 }
