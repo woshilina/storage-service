@@ -85,7 +85,8 @@ export class AuthService {
       });
 
       return {
-        data: { refresh_token: refreshToken, access_token: accessToken },
+        refresh_token: refreshToken,
+        access_token: accessToken,
       };
     } catch (error) {
       throw new HttpException('refresh_token已过期', HttpStatus.BAD_REQUEST);
