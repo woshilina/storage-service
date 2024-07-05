@@ -11,29 +11,18 @@ import { ValidationPipe } from './common/validation.pipe';
 import { PermissionGuard } from 'src/common/guard/permission.guard';
 import { PermissionModule } from './permission/permission.module';
 import { RoleModule } from './role/role.module';
-const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, ENDPOINT_ID } = process.env;
-// const NEWPGPASSWORD = decodeURIComponent(PGPASSWORD);
+// import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
-    // TypeOrmModule.forRoot({
-    //   type: 'mysql', //数据库类型
-    //   host: 'localhost', // host
-    //   port: 3306, //端口
-    //   username: 'root', //账号
-    //   password: '', //密码
-    //   database: 'lina', //库名
-    //   // entities: [], //实体文件
-    //   synchronize: true, //自动将实体类同步到数据库
-    //   autoLoadEntities: true, //将自动加载实体forFeature()方法注册的每个实体都将自动添加到配置对象的实体
-    // }),
+    // ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres', //数据库类型
-      host: PGHOST, // host
+      host: 'ep-twilight-hall-a19e1f05.ap-southeast-1.aws.neon.tech', // host
       port: 5432, //端口
-      username: PGUSER, //账号
-      password: PGPASSWORD, //密码
-      database: PGDATABASE, //库名
-      // ssl: true,
+      username: 'neondb_owner', //账号
+      password: 'oCL3BFXgla2f', //密码
+      database: 'neondb', //库名
+      ssl: true,
       // ssl: {
       //   require: true,
       // },
@@ -45,6 +34,28 @@ const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, ENDPOINT_ID } = process.env;
       synchronize: true, //自动将实体类同步到数据库
       autoLoadEntities: true, //将自动加载实体forFeature()方法注册的每个实体都将自动添加到配置对象的实体
     }),
+    // TypeOrmModule.forRoot({
+    //   type: 'postgres', //数据库类型
+    //   host: 'localhost', // host
+    //   port: 5432, //端口
+    //   username: 'postgres', //账号
+    //   password: 'lina', //密码
+    //   database: 'runoobdb', //库名
+    //   // entities: [], //实体文件
+    //   synchronize: true, //自动将实体类同步到数据库
+    //   autoLoadEntities: true, //将自动加载实体forFeature()方法注册的每个实体都将自动添加到配置对象的实体
+    // }),
+    // TypeOrmModule.forRoot({
+    //   type: 'mysql', //数据库类型
+    //   host: 'localhost', // host
+    //   port: 3306, //端口
+    //   username: 'root', //账号
+    //   password: '', //密码
+    //   database: 'lina', //库名
+    //   // entities: [], //实体文件
+    //   synchronize: true, //自动将实体类同步到数据库
+    //   autoLoadEntities: true, //将自动加载实体forFeature()方法注册的每个实体都将自动添加到配置对象的实体
+    // }),
     UserModule,
     GoodsModule,
     AuthModule,
