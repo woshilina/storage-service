@@ -11,16 +11,36 @@ import { ValidationPipe } from './common/validation.pipe';
 import { PermissionGuard } from 'src/common/guard/permission.guard';
 import { PermissionModule } from './permission/permission.module';
 import { RoleModule } from './role/role.module';
-
+const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, ENDPOINT_ID } = process.env;
+// const NEWPGPASSWORD = decodeURIComponent(PGPASSWORD);
 @Module({
   imports: [
+    // TypeOrmModule.forRoot({
+    //   type: 'mysql', //数据库类型
+    //   host: 'localhost', // host
+    //   port: 3306, //端口
+    //   username: 'root', //账号
+    //   password: '', //密码
+    //   database: 'lina', //库名
+    //   // entities: [], //实体文件
+    //   synchronize: true, //自动将实体类同步到数据库
+    //   autoLoadEntities: true, //将自动加载实体forFeature()方法注册的每个实体都将自动添加到配置对象的实体
+    // }),
     TypeOrmModule.forRoot({
-      type: 'mysql', //数据库类型
-      host: 'localhost', // host
-      port: 3306, //端口
-      username: 'root', //账号
-      password: '', //密码
-      database: 'lina', //库名
+      type: 'postgres', //数据库类型
+      host: PGHOST, // host
+      port: 5432, //端口
+      username: PGUSER, //账号
+      password: PGPASSWORD, //密码
+      database: PGDATABASE, //库名
+      // ssl: true,
+      // ssl: {
+      //   require: true,
+      // },
+      // ssl: 'require',
+      // connection: {
+      //   options: `project=${ENDPOINT_ID}`,
+      // },
       // entities: [], //实体文件
       synchronize: true, //自动将实体类同步到数据库
       autoLoadEntities: true, //将自动加载实体forFeature()方法注册的每个实体都将自动添加到配置对象的实体
