@@ -39,11 +39,11 @@ export class AuthService {
   }> {
     const user = await this.userService.findOne(account);
     if (!user) {
-      throw new HttpException('用户名不正确！', HttpStatus.UNAUTHORIZED);
+      throw new HttpException('用户名不正确！', HttpStatus.FORBIDDEN);
     }
     const compareResult = await BcryptService.compare(password, user.password);
     if (!compareResult) {
-      throw new HttpException('密码错误！', HttpStatus.UNAUTHORIZED);
+      throw new HttpException('密码错误！', HttpStatus.FORBIDDEN);
     }
     const permCodes = await this.getUserPerms(user);
     const payload = {
