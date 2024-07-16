@@ -13,3 +13,5 @@
 7. 自定义权限守卫 permission guard，结合权限装饰器@RequirePermission([code])判断用户是否有访问接口权限
 
 
+## 遇到的问题
+1. 部署时应配置 cors 解决跨域问题
