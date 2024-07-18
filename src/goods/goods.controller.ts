@@ -32,6 +32,8 @@ export class GoodsController {
     @Query('specification') specification: string = '',
     @Query('startQuantity') startQuantity: number = 0,
     @Query('endQuantity') endQuantity: number = 0,
+    @Query('nameOrder') nameOrder: string = '',
+    @Query('quantityOrder') quantityOrder: string = '',
   ) {
     const [data, total] = await this.goodsService.findAll(
       currentPage,
@@ -40,6 +42,8 @@ export class GoodsController {
       specification,
       startQuantity,
       endQuantity,
+      nameOrder,
+      quantityOrder,
     );
 
     const totalPage = Math.ceil(total / pageSize);
