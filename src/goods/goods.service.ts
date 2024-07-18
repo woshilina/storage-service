@@ -28,10 +28,9 @@ export class GoodsService {
     specification: string,
     startQuantity: number,
     endQuantity: number,
-    nameOrder: string,
-    quantityOrder: string,
+    sortBy: string,
+    orderBy: string,
   ): Promise<[Goods[], number]> {
-    console.log(quantityOrder);
     const skip = (currentPage - 1) * pageSize;
     return await this.GoodsRepository.createQueryBuilder('goods')
       .where(
@@ -81,12 +80,8 @@ export class GoodsService {
       )
       .orderBy(
         // 'goods.id': 'DESC',
-        'goods.name',
-        nameOrder && nameOrder == 'asc' ? 'ASC' : 'DESC',
-      )
-      .orderBy(
-        'goods.quantity',
-        quantityOrder && quantityOrder == 'asc' ? 'ASC' : 'DESC',
+        'goods.' + sortBy,
+        orderBy == 'DESC' ? 'DESC' : 'ASC',
       )
       .skip(skip)
       .take(pageSize)
