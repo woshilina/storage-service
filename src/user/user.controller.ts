@@ -17,8 +17,6 @@ import { PasswordDto } from './dto/password.dto';
 import { Public } from '../auth/decorator/public.decorator';
 import { RequirePermission } from 'src/common/decorator/require-permission.decorator';
 
-// import { ValidationPipe } from '../pipe/validation/validation.pipe';
-
 @Controller('/api/v1/users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
