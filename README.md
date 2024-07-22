@@ -11,6 +11,9 @@
 5. 基于jwt身份验证，将身份验证保护注册为 全局守卫，自定义的 @Public() 装饰器，将路由声明为公共的机制
 6. 使用bcryptjs用于用户密码加密
 7. 自定义权限守卫 permission guard，结合权限装饰器@RequirePermission([code])判断用户是否有访问接口权限
+8. 安装依赖class-validator class-transformer，使用ValidationPipe进行参数验证
+9. 添加@nestjs/swagger，生成接口文档 [接口文档地址](https://storage-service-6evx.onrender.com/api)
+
 
 
 ## 遇到的问题
