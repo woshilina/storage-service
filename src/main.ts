@@ -10,16 +10,16 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalPipes(
     new ValidationPipe({
-      // disableErrorMessages: true, //详细的错误消息不会显示在响应正文中
+      disableErrorMessages: true, //详细的错误消息不会显示在响应正文中
     }),
   );
   const options = new DocumentBuilder()
     .setTitle('接口文档')
-    .setDescription('描述，。。。')
+    .setDescription('管理系统 API list')
     .setVersion('1')
     .build();
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('/api-docs', app, document);
+  SwaggerModule.setup('/api', app, document);
   await app.listen(3002);
 }
 bootstrap();
