@@ -83,7 +83,7 @@ export class GoodsService {
         'goods.' + sortBy,
         orderBy == 'DESC' ? 'DESC' : 'ASC',
       )
-      .cache(60000)
+      // .cache(60000)
       .skip(skip)
       .take(pageSize)
       .getManyAndCount();
