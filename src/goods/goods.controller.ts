@@ -10,8 +10,8 @@ import {
 } from '@nestjs/common';
 import { GoodsService } from './goods.service';
 import { CreateGoodsDto, UpdateGoodsDto } from './dto/goods.dto';
-import { DeleteDto } from 'src/common/dto/delete.dto';
-import { RequirePermission } from 'src/common/decorator/require-permission.decorator';
+import { DeleteDto } from '../common/dto/delete.dto';
+import { RequirePermission } from '../common/decorator/require-permission.decorator';
 
 @Controller('/api/v1/goods')
 export class GoodsController {
