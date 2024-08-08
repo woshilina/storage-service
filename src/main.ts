@@ -5,8 +5,8 @@ import { HttpExceptionFilter } from './common/http-exception.filter';
 import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors(); //设置可跨域
-  // app.enableCors({ origin: 'https://storage-front-8ecz.onrender.com/' });
+  // app.enableCors(); //设置可跨域
+  app.enableCors({ origin: 'https://storage-front-ruddy.vercel.app' });
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalPipes(
     new ValidationPipe({
