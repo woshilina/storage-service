@@ -6,12 +6,12 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Request } from 'express';
-import { RoleService } from 'src/role/role.service';
-// import { Permission } from 'src/permission/entities/permission.entity';
+import { RoleService } from '../../role/role.service';
+// import { Permission } from '..permission/entities/permission.entity';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
-import { jwtConstants } from 'src/auth/constants';
-import { PERMS_KEY } from 'src/common/decorator/require-permission.decorator';
+import { jwtConstants } from '../../auth/constants';
+import { PERMS_KEY } from '../../common/decorator/require-permission.decorator';
 
 @Injectable()
 export class PermissionGuard implements CanActivate {

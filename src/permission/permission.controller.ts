@@ -13,8 +13,8 @@ import {
 } from '@nestjs/common';
 import { PermissionService } from './permission.service';
 import { CreatePermissionDto, UpdatePermissionDto } from './dto/permission.dto';
-import { DeleteDto } from 'src/common/dto/delete.dto';
-import { RequirePermission } from 'src/common/decorator/require-permission.decorator';
+import { DeleteDto } from '../common/dto/delete.dto';
+import { RequirePermission } from '../common/decorator/require-permission.decorator';
 // import { Request } from 'express';
 
 @Controller('/api/v1/permissions')

@@ -12,10 +12,10 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { DeleteDto } from 'src/common/dto/delete.dto';
+import { DeleteDto } from '../common/dto/delete.dto';
 import { PasswordDto } from './dto/password.dto';
 import { Public } from '../auth/decorator/public.decorator';
-import { RequirePermission } from 'src/common/decorator/require-permission.decorator';
+import { RequirePermission } from '../common/decorator/require-permission.decorator';
 
 @Controller('/api/v1/users')
 export class UserController {

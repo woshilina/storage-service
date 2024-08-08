@@ -3,7 +3,7 @@ import { CreateRoleDto, UpdateRoleDto } from './dto/role.dto';
 import { Role } from './entities/role.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Brackets, In } from 'typeorm';
-import { Permission } from 'src/permission/entities/permission.entity';
+import { Permission } from '../permission/entities/permission.entity';
 
 @Injectable()
 export class RoleService {

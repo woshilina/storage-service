@@ -8,7 +8,7 @@ import {
   JoinTable,
 } from 'typeorm';
 import { BcryptService } from '../../common/bcryptjs';
-import { Role } from 'src/role/entities/role.entity';
+import { Role } from '../../role/entities/role.entity';
 
 @Entity()
 export class User {

@@ -8,7 +8,7 @@ import { BcryptService } from '../common/bcryptjs';
 import { jwtConstants } from './constants';
 
 // import { flatArrayToTree } from '../common/utils';
-// import { Permission } from 'src/permission/entities/permission.entity';
+// import { Permission } from '../permission/entities/permission.entity';
 
 @Injectable()
 export class AuthService {

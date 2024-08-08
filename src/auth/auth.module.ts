@@ -9,8 +9,8 @@ import { LocalStrategy } from './local.strategy';
 import { JwtStrategy } from './jwt.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
-import { RoleModule } from 'src/role/role.module';
-import { PermissionModule } from 'src/permission/permission.module';
+import { RoleModule } from '../role/role.module';
+import { PermissionModule } from '../permission/permission.module';
 @Module({
   imports: [
     UserModule,
