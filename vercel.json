@@ -1,16 +1,16 @@
 {
-  "version": "0.0.1",
-  "name": "torage-service",
+  "version": 2,
   "builds": [
     {
-      "src": "dist/main.js",
+      "src": "dist/main.ts",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "dist/main.js"
+      "dest": "dist/main.ts",
+      "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
     }
   ]
 }
