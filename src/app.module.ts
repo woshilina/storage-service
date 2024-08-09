@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-// import { AppService } from './app.service';
+import { AppService } from './app.service';
 // import { TypeOrmModule } from '@nestjs/typeorm';
 // import { UserModule } from './user/user.module';
 // import { GoodsModule } from './goods/goods.module';
@@ -55,7 +55,7 @@ import { AppController } from './app.controller';
   ],
   controllers: [AppController],
   providers: [
-    // AppService,
+    AppService,
     // {
     //   provide: APP_FILTER,
     //   useClass: HttpExceptionFilter,
