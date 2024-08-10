@@ -21,7 +21,7 @@ import { DB_TYPE } from './config';
       username: process.env.DB_USER, //账号
       password: process.env.DB_PASSWORD, //密码
       database: process.env.DB_DATABASE, //库名
-      // ssl: process.env.DB_SSL ? true : false,
+      ssl: process.env.DB_SSL,
       synchronize: true, //自动将实体类同步到数据库
       autoLoadEntities: true, //将自动加载实体forFeature()方法注册的每个实体都将自动添加到配置对象的实体
     }),
